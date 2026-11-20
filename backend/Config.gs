@@ -84,6 +84,6 @@ var ROLE_SEED = [
   ['LATHA',    'Sales & Customer Coordinator',    'Latha',            'PBG-EMP0005', 'SATISH',  'N', 'Y'],
   ['RADHIKA',  'Accounts Executive',              'Radhika',          'PBG-EMP0006', 'FOUNDER', 'N', 'N'],
   ['ARJUN',    'Senior Store Helper',             'Arjun',            'PBG-EMP0007', 'SATISH',  'Y', 'N'],
-  ['NAGENDER', 'Store Helper & Vehicle In-charge','Nagender',         '',            'SATISH',  'Y', 'N'],
-  ['FATHER',   'Collections & Audit Supervisor',  'Srinivas Sarma',   '',            'FOUNDER', 'N', 'N']
+  ['NAGENDER', 'Store Helper & Vehicle In-charge','Nagender',         'PBG-EMP0010',            'SATISH',  'Y', 'N'],
+  ['FATHER',   'Collections & Audit Supervisor',  'Srinivas Sarma K',   'PBG-EMP0009',            'FOUNDER', 'N', 'N']
 ];

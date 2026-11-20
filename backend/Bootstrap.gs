@@ -47,17 +47,25 @@ function setupGeeta() {
 /** Insert any missing roles from ROLE_SEED (never overwrites existing rows). */
 function reseedRoles_() {
   var have = {};
-  readTable_('Roles').forEach(function (r) { have[r.role_id] = true; });
+  readTable_('Roles').forEach(function (r) { have[String(r.role_id).toUpperCase()] = true; });
   var now = new Date();
   var sys = { EmpID: 'system-seed', RoleID: 'SYSTEM' };
   ROLE_SEED.forEach(function (r) {
-    if (have[r[0]]) return;
-    appendRow_('Roles', {
-      role_id: r[0], role_name: r[1], person: r[2], emp_id: r[3], reports_to: r[4],
-      responsibilities_en: '', responsibilities_te: '', measured_by_en: '', measured_by_te: '',
-      helper_mode: r[5], customer_contact_allowed: r[6],
-      created_at: now, updated_at: now
-    }, sys);
+    var id = r[0];
+    if (have[id]) {
+      // Row exists: sync identity/policy columns only (never touch content).
+      updateFirst_('Roles', 'role_id', id, {
+        role_name: r[1], person: r[2], emp_id: r[3], reports_to: r[4],
+        helper_mode: r[5], customer_contact_allowed: r[6], updated_at: now
+      }, sys);
+    } else {
+      appendRow_('Roles', {
+        role_id: id, role_name: r[1], person: r[2], emp_id: r[3], reports_to: r[4],
+        responsibilities_en: '', responsibilities_te: '', measured_by_en: '', measured_by_te: '',
+        helper_mode: r[5], customer_contact_allowed: r[6],
+        created_at: now, updated_at: now
+      }, sys);
+    }
   });
 }
 
