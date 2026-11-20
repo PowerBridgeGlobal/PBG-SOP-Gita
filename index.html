@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0B1F4D">
+<title>PBG SOP Gita</title>
+<meta name="description" content="PBG SOP Gita — PowerBridge Global's living handbook. Your role, daily checklist and SOPs in English and Telugu.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Telugu:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EEF2F8; --card:#FFFFFF; --card-2:#F5F8FC; --border:#D8E0EE;
+    --navy:#0B1F4D; --navy-2:#15306B; --gold:#C9A227; --gold-soft:#F4ECCC;
+    --text:#152038; --muted:#5B6B8C; --ok:#1E8E5A; --warn:#8A6A12; --warn-bg:#FFF6E0;
+    --danger:#C0493F; --r:16px; --tap:56px; --shadow:0 2px 12px rgba(11,31,77,.08);
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+    --bg:#0A1730; --card:#0F1F3D; --card-2:#132650; --border:#22355f;
+    --navy:#EAF0FF; --navy-2:#C7D4F0; --gold:#E3C25A; --gold-soft:#2A2410;
+    --text:#EEF2FA; --muted:#9FB0D4; --ok:#4ADE9A; --warn:#E3C25A; --warn-bg:#2A2410;
+    --danger:#F0685F; --shadow:0 2px 14px rgba(0,0,0,.35);
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0A1730; --card:#0F1F3D; --card-2:#132650; --border:#22355f;
+    --navy:#EAF0FF; --navy-2:#C7D4F0; --gold:#E3C25A; --gold-soft:#2A2410;
+    --text:#EEF2FA; --muted:#9FB0D4; --ok:#4ADE9A; --warn:#E3C25A; --warn-bg:#2A2410; --danger:#F0685F;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;background:var(--bg);}
+  body{font-family:'Inter',system-ui,-apple-system,sans-serif;color:var(--text);font-size:17px;line-height:1.5;}
+  .te body,[lang="te"]{font-family:'Noto Sans Telugu','Inter',sans-serif;}
+  .wrap{max-width:640px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;}
+  .te{font-family:'Noto Sans Telugu','Inter',sans-serif;}
+
+  /* top bar */
+  header{position:sticky;top:0;z-index:10;background:var(--navy);color:#fff;
+    padding:calc(10px + env(safe-area-inset-top)) 14px 10px;display:flex;align-items:center;gap:10px;}
+  .logo{width:36px;height:36px;border-radius:9px;background:var(--gold);color:#0B1F4D;
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px;flex-shrink:0;}
+  header .title{font-weight:800;font-size:17px;line-height:1.1;}
+  header .title small{display:block;font-weight:500;font-size:11px;color:#AEBEE0;}
+  header .spacer{flex:1;}
+  .lang-toggle{display:flex;background:rgba(255,255,255,.14);border-radius:999px;overflow:hidden;border:1px solid rgba(255,255,255,.22);}
+  .lang-toggle button{background:transparent;border:0;color:#cdd8f0;font-weight:700;font-size:13px;padding:7px 11px;min-height:36px;}
+  .lang-toggle button.on{background:var(--gold);color:#0B1F4D;}
+
+  main{flex:1;padding:14px;}
+  .demo-banner{background:var(--warn-bg);color:var(--warn);border:1px solid var(--gold);
+    border-radius:12px;padding:9px 12px;font-size:13px;margin-bottom:12px;}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+    box-shadow:var(--shadow);padding:16px;margin-bottom:12px;}
+  h2{font-size:19px;margin:0 0 4px;color:var(--navy);}
+  h3{font-size:15px;margin:0 0 8px;color:var(--navy);text-transform:uppercase;letter-spacing:.5px;}
+  .muted{color:var(--muted);font-size:14px;}
+  .pending{color:var(--warn);font-style:italic;font-size:14px;}
+
+  button.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
+    min-height:var(--tap);border:0;border-radius:14px;background:var(--navy);color:#fff;
+    font-size:17px;font-weight:700;cursor:pointer;}
+  button.btn.gold{background:var(--gold);color:#0B1F4D;}
+  button.btn.ghost{background:var(--card-2);color:var(--navy);border:1px solid var(--border);}
+  button.btn:active{transform:translateY(1px);}
+
+  .field{margin-bottom:12px;}
+  .field label{display:block;font-weight:600;font-size:14px;margin-bottom:6px;color:var(--navy);}
+  .field input{width:100%;min-height:var(--tap);border:1px solid var(--border);border-radius:12px;
+    padding:0 14px;font-size:18px;background:var(--card);color:var(--text);}
+  .err{color:var(--danger);font-size:14px;margin-top:8px;min-height:18px;}
+
+  /* role picker (demo) */
+  .role-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .role-grid button{min-height:64px;border-radius:14px;border:1px solid var(--border);
+    background:var(--card-2);color:var(--navy);font-weight:700;font-size:15px;padding:8px;cursor:pointer;}
+  .role-grid button .r2{display:block;font-weight:500;font-size:12px;color:var(--muted);margin-top:3px;}
+
+  /* list items */
+  .item{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--border);
+    border-radius:14px;background:var(--card);margin-bottom:10px;min-height:var(--tap);cursor:pointer;}
+  .item .n{width:30px;height:30px;border-radius:8px;background:var(--gold-soft);color:var(--warn);
+    display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;font-size:14px;}
+  .item .main{flex:1;}
+  .item .main .t{font-weight:600;}
+  .item .main .s{font-size:13px;color:var(--muted);}
+  .item .chev{color:var(--muted);font-size:20px;}
+  .timeblock{font-size:12px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.5px;margin:14px 0 8px;}
+
+  .sop-meta{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 12px;}
+  .pill{background:var(--card-2);border:1px solid var(--border);border-radius:999px;padding:4px 11px;font-size:12.5px;color:var(--muted);}
+  .body-text{white-space:pre-wrap;font-size:17px;line-height:1.7;}
+  .te .body-text, .body-text.te{font-family:'Noto Sans Telugu','Inter',sans-serif;}
+
+  .searchbar input{width:100%;min-height:var(--tap);border:1px solid var(--border);border-radius:14px;
+    padding:0 14px;font-size:17px;background:var(--card);color:var(--text);margin-bottom:12px;}
+
+  .ackbar{position:sticky;bottom:0;background:var(--card);border-top:1px solid var(--border);
+    padding:12px 14px calc(12px + env(safe-area-inset-bottom));box-shadow:0 -2px 12px rgba(11,31,77,.08);}
+
+  /* helper cards */
+  .hcard{border:1px solid var(--border);border-radius:18px;background:var(--card);
+    padding:16px;margin-bottom:14px;box-shadow:var(--shadow);}
+  .hcard .photo{height:190px;border-radius:14px;overflow:hidden;background:var(--card-2);border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px;margin-bottom:12px;}
+  .hcard .photo.ph{border-style:dashed;}
+  .hcard .photo img{width:100%;height:100%;object-fit:cover;display:block;}
+  .hcard.playing{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold);}
+  .hcard.playing .speak{background:var(--gold);color:#0B1F4D;animation:pulse 1s infinite;}
+  @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
+  .hcard .hrow{display:flex;align-items:center;gap:12px;}
+  .hcard .num{width:44px;height:44px;border-radius:12px;background:var(--gold);color:#0B1F4D;
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;flex-shrink:0;}
+  .hcard .cap{flex:1;font-size:22px;font-weight:700;}
+  .hcard .cap small{display:block;font-size:13px;font-weight:500;color:var(--muted);}
+  .hcard .speak{width:52px;height:52px;border-radius:50%;background:var(--navy);color:#fff;border:0;font-size:22px;flex-shrink:0;}
+  .clock{font-size:13px;color:var(--gold);font-weight:700;margin-bottom:6px;}
+
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--navy);color:#fff;
+    padding:12px 18px;border-radius:12px;font-size:15px;opacity:0;pointer-events:none;transition:.2s;z-index:50;max-width:90%;}
+  .toast.show{opacity:1;}
+  .hidden{display:none !important;}
+  .center{min-height:70vh;display:flex;flex-direction:column;justify-content:center;}
+  footer{padding:18px 14px calc(18px + env(safe-area-inset-bottom));text-align:center;color:var(--muted);font-size:12px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">ప</div>
+    <div class="title">PBG <span style="color:var(--gold)">SOP Gita</span><small id="hdrSub">Living handbook</small></div>
+    <div class="spacer"></div>
+    <div class="lang-toggle">
+      <button id="langEn" onclick="setLang('en')">EN</button>
+      <button id="langTe" onclick="setLang('te')">తె</button>
+    </div>
+  </header>
+  <main id="main"></main>
+  <footer>PowerBridge Global · PBG SOP Gita · v1.1</footer>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =======================================================================
+   PBG GEETA — standalone handbook app (Stage C)
+   -----------------------------------------------------------------------
+   TO GO LIVE: set API_URL below to your deployed Geeta web-app /exec URL.
+   While API_URL is blank, the app runs in SAMPLE PREVIEW mode with built-in
+   placeholder content so you can test the screens on your phone with no setup.
+   ======================================================================= */
+var API_URL = ""; // <-- paste your Geeta /exec URL here to connect live data
+
+var DEMO = API_URL === "";
+var state = { lang: localStorage.getItem('geeta_lang') || 'en', session: null, allView: null };
+
+/* ---------------- i18n (app wording only; handbook content is separate) ---- */
+var STR = {
+  en:{ sub:"Living handbook", signin:"Sign in", empid:"Employee ID", pin:"PIN",
+    preview:"Preview as…", myrole:"My role", resp:"Responsibilities", measured:"Measured by",
+    checklist:"Today's checklist", mysops:"My SOPs", training:"This month's training",
+    search:"Search my SOPs…", version:"Version", effective:"Effective", back:"Back",
+    ack:"Read and understood", acked:"Thank you — recorded.", logout:"Sign out",
+    tel_soon:"Telugu coming soon", nosops:"No SOPs loaded yet.", nocheck:"No checklist loaded yet.",
+    notrain:"No training loaded for this month yet.", helper_note:"Store Helper is live in English. The photos are samples and the Telugu voice/text is coming soon.",
+    allroles:"View any role", wrong:"Wrong Employee ID or PIN.", loading:"Loading…", covering:"Covering today" },
+  te:{ sub:"సజీవ హ్యాండ్‌బుక్", signin:"లాగిన్", empid:"ఉద్యోగి ID", pin:"పిన్",
+    preview:"ఎవరిగా చూడాలి…", myrole:"నా పాత్ర", resp:"బాధ్యతలు", measured:"కొలత",
+    checklist:"నేటి చెక్‌లిస్ట్", mysops:"నా SOPలు", training:"ఈ నెల శిక్షణ",
+    search:"నా SOPలలో వెతకండి…", version:"వర్షన్", effective:"అమల్లోకి", back:"వెనుకకు",
+    ack:"చదివి అర్థమైంది", acked:"ధన్యవాదాలు — నమోదైంది.", logout:"లాగ్ అవుట్",
+    tel_soon:"తెలుగు త్వరలో", nosops:"ఇంకా SOPలు లోడ్ కాలేదు.", nocheck:"ఇంకా చెక్‌లిస్ట్ లోడ్ కాలేదు.",
+    notrain:"ఈ నెలకు శిక్షణ ఇంకా లేదు.", helper_note:"స్టోర్ హెల్పర్ ఇంగ్లీష్‌లో లైవ్‌లో ఉంది. ఫోటోలు నమూనాలు, తెలుగు త్వరలో వస్తుంది.",
+    allroles:"ఏ పాత్ర అయినా చూడండి", wrong:"ఉద్యోగి ID లేదా పిన్ తప్పు.", loading:"లోడ్ అవుతోంది…", covering:"ఈ రోజు కవర్" }
+};
+function t(k){ return (STR[state.lang] && STR[state.lang][k]) || STR.en[k] || k; }
+
+/* ---------------- SAMPLE DATA (preview only; clearly placeholder) --------- */
+var DEMO_ROLES = {
+  FOUNDER:{role_id:"FOUNDER",role_name:"Founder / Admin",person:"Founder",helper_mode:"N",accessAll:true,pricingOK:true},
+  SATISH:{role_id:"SATISH",role_name:"Sales & Operations Manager",person:"Satish",helper_mode:"N",accessAll:true,pricingOK:true},
+  LATHA:{role_id:"LATHA",role_name:"Sales & Customer Coordinator",person:"Latha",helper_mode:"N",accessAll:false,pricingOK:false},
+  RADHIKA:{role_id:"RADHIKA",role_name:"Accounts Executive",person:"Radhika",helper_mode:"N",accessAll:false,pricingOK:false},
+  ARJUN:{role_id:"ARJUN",role_name:"Senior Store Helper",person:"Arjun",helper_mode:"Y",accessAll:false,pricingOK:false,
+    responsibilities_en:"Open the store on time and get it ready for business\nMark attendance on the biometric device\nCheck drinking water; arrange water if it is low\nReceive, move, handle and pack stock carefully (no damage)\nHelp load and dispatch customer orders\nHelp customers carry/load goods\nKeep the store, counters and storage neat and safe\nLock the shutter at closing (when assigned)\nFollow all safety rules (SAFE-001)",responsibilities_te:""},
+  NAGENDER:{role_id:"NAGENDER",role_name:"Store Helper & Vehicle In-charge",person:"Nagender",helper_mode:"Y",accessAll:false,pricingOK:false},
+  FATHER:{role_id:"FATHER",role_name:"Collections & Audit Supervisor",person:"Srinivas Sarma",helper_mode:"N",accessAll:false,pricingOK:false}
+};
+function demoRoleData(id){
+  var r = DEMO_ROLES[id];
+  var helper = r.helper_mode === "Y";
+  var checklist = helper ? [
+    {order:1, time_block:"Store opening",item_en:"Open shutter and main door",item_te:"",image_url:demoPhoto('shutter'),audio_url:""},
+    {order:2, time_block:"Store opening",item_en:"Switch on lights and fans",item_te:"",image_url:demoPhoto('lights'),audio_url:""},
+    {order:3, time_block:"Store opening",item_en:"Mark attendance (biometric)",item_te:"",image_url:demoPhoto('attendance'),audio_url:""},
+    {order:4, time_block:"Store opening",item_en:"Check drinking water; arrange if low",item_te:"",image_url:demoPhoto('water'),audio_url:""},
+    {order:5, time_block:"Store opening",item_en:"Quick clean / tidy the store",item_te:"",image_url:demoPhoto('clean'),audio_url:""},
+    {order:6, time_block:"Midday",item_en:"Receive incoming stock; help check against challan",item_te:"",image_url:demoPhoto('inward'),audio_url:""},
+    {order:7, time_block:"Midday",item_en:"Pack orders carefully",item_te:"",image_url:demoPhoto('packing'),audio_url:""},
+    {order:8, time_block:"Midday",item_en:"Help load the vehicle for dispatch",item_te:"",image_url:demoPhoto('dispatch'),audio_url:""},
+    {order:9, time_block:"Midday",item_en:"Help customers carry goods",item_te:"",image_url:demoPhoto('customer'),audio_url:""},
+    {order:10,time_block:"Evening",item_en:"Tidy counters and storage",item_te:"",image_url:demoPhoto('tidy'),audio_url:""},
+    {order:11,time_block:"Evening",item_en:"Check all items are back in place",item_te:"",image_url:demoPhoto('check'),audio_url:""},
+    {order:12,time_block:"Store closing",item_en:"Switch off lights/fans (as instructed)",item_te:"",image_url:demoPhoto('off'),audio_url:""},
+    {order:13,time_block:"Store closing",item_en:"Lock shutter (if assigned)",item_te:"",image_url:demoPhoto('closing'),audio_url:""}
+  ] : [
+    {order:1,time_block:"Morning",item_en:"[SAMPLE] Review today's leads / tasks",item_te:""},
+    {order:2,time_block:"Midday",item_en:"[SAMPLE] Follow up open quotations",item_te:""},
+    {order:3,time_block:"Evening",item_en:"[SAMPLE] Update day's status",item_te:""}
+  ];
+  var sops = [
+    {code:"STO-001",title_en:"Store Opening Procedure",title_te:"",version:"1.1",effective_date:"2026-11-23"},
+    {code:"SAFE-001",title_en:"Safety",title_te:"",version:"1.1",effective_date:"2026-11-23"}
+  ];
+  return { role:r, checklist:checklist, sops:sops, helper_mode:r.helper_mode, covering:demoCovering(id) };
+}
+function demoCovering(id){
+  if(String(id).toUpperCase()==='ARJUN') return [{absent_role_id:'NAGENDER',absent_person:'Nagender',
+    tasks:['[SAMPLE] Daily vehicle check — both two-wheelers','[SAMPLE] Lock the shutter at closing']}];
+  return [];
+}
+function empToRoleDemo(emp){
+  var map={'PBG-EMP0001':'FOUNDER','PBG-EMP0008':'SATISH','PBG-EMP0005':'LATHA','PBG-EMP0006':'RADHIKA','PBG-EMP0007':'ARJUN'};
+  if(!emp) return '';
+  var u=String(emp).toUpperCase();
+  return map[u] || (DEMO_ROLES[u]?u:'');
+}
+var DEMO_SOP_BODY = {
+  "STO-001":"[SAMPLE TEXT — your approved v1.1 wording will replace this.]\n\nThis is placeholder content to show how an SOP page looks: title, version and effective date at the top, then the step-by-step body. The real Store Opening Procedure (English + Telugu) loads when you paste the v1.1 master.",
+  "SAFE-001":"[SAMPLE TEXT — your approved v1.1 wording will replace this.]\n\nPlaceholder safety SOP body for preview only."
+};
+
+/* ---------------- API (demo or live) -------------------------------------- */
+function api(action, params){
+  if(DEMO) return demoApi(action, params);
+  return jsonp(action, params);
+}
+function demoApi(action, p){
+  return new Promise(function(res){
+    setTimeout(function(){
+      if(action==='getRole') res({ok:true,data:demoRoleData((p.role_id||'').toUpperCase())});
+      else if(action==='getSOP') res({ok:true,data:{code:p.code,title_en:({ "STO-001":"Store Opening Procedure","SAFE-001":"Safety"})[p.code]||p.code,title_te:"",version:"1.1",effective_date:"2026-11-23",body_en:DEMO_SOP_BODY[p.code]||"[SAMPLE]",body_te:""}});
+      else if(action==='getTraining') res({ok:true,data:[{month:"2026-12",sop_topics:"[SAMPLE] Opening / Closing / Vehicle",technical_topic:"Wires",questions_en:"",questions_te:""}]});
+      else if(action==='acknowledge') res({ok:true,data:{AckID:'DEMO'}});
+      else res({ok:true,data:null});
+    }, 120);
+  });
+}
+var _seq=0;
+function jsonp(action, params){
+  return new Promise(function(resolve,reject){
+    var cb='__gcb'+(++_seq)+'_'+Date.now();
+    var url=new URL(API_URL);
+    url.searchParams.set('action',action);
+    Object.keys(params||{}).forEach(function(k){ if(params[k]!=null&&params[k]!=='') url.searchParams.set(k,params[k]); });
+    url.searchParams.set('callback',cb);
+    var s=document.createElement('script'); var done=false;
+    var timer=setTimeout(function(){ if(!done){done=true;cleanup();reject(new Error('Network timeout'));} },15000);
+    function cleanup(){ try{delete window[cb];}catch(e){window[cb]=undefined;} if(s.parentNode)s.parentNode.removeChild(s); clearTimeout(timer); }
+    window[cb]=function(data){ if(done)return; done=true; cleanup(); resolve(data); };
+    s.onerror=function(){ if(done)return; done=true; cleanup(); reject(new Error('Could not reach the server')); };
+    s.src=url.toString(); document.body.appendChild(s);
+  });
+}
+
+/* ---------------- views --------------------------------------------------- */
+var M = document.getElementById('main');
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function toast(msg){var el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(function(){el.classList.remove('show');},2200);}
+
+function setLang(l){ state.lang=l; localStorage.setItem('geeta_lang',l); applyLang(); render(); }
+function applyLang(){
+  document.getElementById('langEn').classList.toggle('on',state.lang==='en');
+  document.getElementById('langTe').classList.toggle('on',state.lang==='te');
+  document.getElementById('hdrSub').textContent=t('sub');
+  document.documentElement.setAttribute('lang',state.lang);
+}
+
+function render(){
+  if(!state.session){ renderLogin(); return; }
+  if(state.view && state.view.name==='sop'){ renderSOP(state.view.code); return; }
+  var r = state.session;
+  if((r.helper_mode==='Y') && !state.allView){ renderHelperHome(); return; }
+  renderHome();
+}
+
+/* --- login --- */
+function renderLogin(){
+  if(DEMO){
+    M.innerHTML =
+      '<div class="demo-banner">SAMPLE PREVIEW — placeholder content, to show the screens. Your approved v1.1 text loads later. Pick a role to preview:</div>'+
+      '<div class="card"><h2>'+t('preview')+'</h2><div class="role-grid" id="rg"></div></div>';
+    var rg=document.getElementById('rg');
+    Object.keys(DEMO_ROLES).forEach(function(id){
+      var r=DEMO_ROLES[id];
+      var b=document.createElement('button');
+      b.innerHTML=esc(r.person)+'<span class="r2">'+esc(r.role_name)+'</span>';
+      b.onclick=function(){ state.session=Object.assign({},r); state.allView=null; render(); };
+      rg.appendChild(b);
+    });
+    return;
+  }
+  M.innerHTML=
+    '<div class="center"><div class="card">'+
+    '<h2>'+t('signin')+'</h2>'+
+    '<div class="field"><label>'+t('empid')+'</label><input id="empid" autocomplete="username" placeholder="PBG-EMP0007"></div>'+
+    '<div class="field"><label>'+t('pin')+'</label><input id="pin" type="password" inputmode="numeric" autocomplete="current-password"></div>'+
+    '<button class="btn gold" id="loginBtn">'+t('signin')+'</button>'+
+    '<div class="err" id="loginErr"></div>'+
+    '</div></div>';
+  document.getElementById('loginBtn').onclick=doLogin;
+  document.getElementById('pin').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
+}
+function doLogin(){
+  var empId=document.getElementById('empid').value.trim();
+  var pin=document.getElementById('pin').value.trim();
+  var err=document.getElementById('loginErr'); err.textContent='';
+  if(!empId||!pin){ err.textContent=t('wrong'); return; }
+  var btn=document.getElementById('loginBtn'); btn.disabled=true; btn.textContent=t('loading');
+  api('login',{emp_id:empId,pin:pin}).then(function(d){
+    if(!d.ok){ err.textContent=d.error||t('wrong'); btn.disabled=false; btn.textContent=t('signin'); return; }
+    state.session=d.data; state.allView=null;
+    try{sessionStorage.setItem('geeta_session',JSON.stringify(d.data));}catch(e){}
+    render();
+  }).catch(function(e){ err.textContent=String(e.message||e); btn.disabled=false; btn.textContent=t('signin'); });
+}
+function logout(){ state.session=null; state.allView=null; state.view=null; try{sessionStorage.removeItem('geeta_session');}catch(e){} render(); }
+
+/* --- staff/management home --- */
+function renderHome(){
+  var r = state.allView || state.session;
+  M.innerHTML = '<div id="home"></div>';
+  var h=document.getElementById('home');
+  if(DEMO) h.innerHTML='<div class="demo-banner">SAMPLE PREVIEW — placeholder content.</div>';
+  if(state.session.accessAll){
+    h.innerHTML += '<button class="btn ghost" style="margin-bottom:12px" onclick="pickRole()">'+t('allroles')+'</button>';
+  }
+  h.innerHTML +=
+    '<div class="card"><h2>'+esc(r.role_name)+'</h2><div class="muted">'+esc(r.person||'')+'</div></div>'+
+    '<div class="card"><h3>'+t('resp')+'</h3><div id="resp"><div class="muted">'+t('loading')+'</div></div></div>'+
+    '<div class="card"><h3>'+t('checklist')+'</h3><div id="cl"></div></div>'+
+    '<div id="covwrap"></div>'+
+    '<div class="card"><h3>'+t('mysops')+'</h3>'+
+      '<div class="searchbar"><input id="sopSearch" placeholder="'+t('search')+'"></div><div id="sops"></div></div>'+
+    (state.embed?'':'<button class="btn ghost" onclick="logout()">'+t('logout')+'</button>');
+  loadRole(r.role_id);
+}
+function pickRole(){
+  // simple role switch for Founder/Satish/Admin
+  var ids=Object.keys(DEMO_ROLES);
+  var html='<div class="card"><h3>'+t('allroles')+'</h3>';
+  ids.forEach(function(id){ html+='<div class="item" onclick="viewRole(\''+id+'\')"><div class="main"><div class="t">'+esc(DEMO_ROLES[id].role_name)+'</div><div class="s">'+esc(DEMO_ROLES[id].person)+'</div></div><div class="chev">›</div></div>'; });
+  html+='<button class="btn ghost" style="margin-top:6px" onclick="state.allView=null;render()">'+t('back')+'</button></div>';
+  M.innerHTML=html;
+}
+function viewRole(id){ state.allView=Object.assign({},DEMO_ROLES[id]); render(); }
+
+function loadRole(roleId){
+  api('getRole',{role_id:roleId,token:tok()}).then(function(d){
+    if(!d.ok){ return; }
+    renderResp(d.data.role||{});
+    renderChecklist(d.data.checklist||[]);
+    renderCovering(d.data.covering||[]);
+    state._sops=d.data.sops||[];
+    renderSOPList(state._sops);
+    var sb=document.getElementById('sopSearch');
+    if(sb) sb.oninput=function(){ var q=this.value.toLowerCase();
+      renderSOPList((state._sops||[]).filter(function(s){return (s.code+s.title_en).toLowerCase().indexOf(q)>=0;})); };
+  });
+}
+function listify(s){ return String(s).split('\n').filter(function(x){return x.trim();}).map(function(x){return '<li style="margin-bottom:6px">'+esc(x)+'</li>';}).join(''); }
+function renderCovering(list){
+  var el=document.getElementById('covwrap'); if(!el)return;
+  if(!list||!list.length){ el.innerHTML=''; return; }
+  el.innerHTML=list.map(function(c){
+    var items=c.tasks&&c.tasks.length ? '<ul style="margin:0;padding-left:20px">'+c.tasks.map(function(x){return '<li style="margin-bottom:6px">'+esc(x)+'</li>';}).join('')+'</ul>' : '<div class="muted">—</div>';
+    return '<div class="card" style="border-color:var(--gold)"><h3>👥 '+t('covering')+' — '+esc(c.absent_person)+'</h3>'+items+'</div>';
+  }).join('');
+}
+function renderResp(role){
+  var el=document.getElementById('resp'); if(!el)return;
+  var te=state.lang==='te';
+  var en=role.responsibilities_en||'', teTxt=role.responsibilities_te||'';
+  if(te){
+    if(teTxt){ el.innerHTML='<ul style="margin:0;padding-left:20px">'+listify(teTxt)+'</ul>'; }
+    else if(en){ el.innerHTML='<div class="pending" style="margin-bottom:8px">'+t('tel_soon')+'</div><ul style="margin:0;padding-left:20px">'+listify(en)+'</ul>'; }
+    else { el.innerHTML='<div class="pending">— awaiting content</div>'; }
+  } else {
+    el.innerHTML = en ? '<ul style="margin:0;padding-left:20px">'+listify(en)+'</ul>' : '<div class="pending">— awaiting content</div>';
+  }
+}
+function renderChecklist(items){
+  var cl=document.getElementById('cl'); if(!cl)return;
+  if(!items.length){ cl.innerHTML='<div class="pending">'+t('nocheck')+'</div>'; return; }
+  var html='', block=null;
+  items.forEach(function(it){
+    if(it.time_block!==block){ block=it.time_block; html+='<div class="timeblock">🕐 '+esc(block||'')+'</div>'; }
+    var txt=state.lang==='te' ? (it.item_te||('<span class="pending">'+t('tel_soon')+'</span>')) : esc(it.item_en);
+    html+='<div class="item"><div class="n">'+esc(it.order)+'</div><div class="main"><div class="t">'+txt+'</div></div></div>';
+  });
+  cl.innerHTML=html;
+}
+function renderSOPList(sops){
+  var el=document.getElementById('sops'); if(!el)return;
+  if(!sops.length){ el.innerHTML='<div class="pending">'+t('nosops')+'</div>'; return; }
+  el.innerHTML=sops.map(function(s){
+    var title=state.lang==='te' ? (s.title_te|| s.title_en+' ') : esc(s.title_en);
+    return '<div class="item" onclick="openSOP(\''+esc(s.code)+'\')"><div class="main"><div class="t">'+title+'</div>'+
+      '<div class="s">'+esc(s.code)+' · '+t('version')+' '+esc(s.version)+'</div></div><div class="chev">›</div></div>';
+  }).join('');
+}
+
+/* --- SOP detail --- */
+function openSOP(code){ state.view={name:'sop',code:code}; render(); }
+function renderSOP(code){
+  M.innerHTML='<div class="card"><div class="muted">'+t('loading')+'</div></div>';
+  api('getSOP',{code:code,token:tok()}).then(function(d){
+    if(!d.ok){ M.innerHTML='<div class="card"><div class="pending">'+esc(d.error)+'</div><button class="btn ghost" onclick="closeSOP()">'+t('back')+'</button></div>'; return; }
+    var s=d.data;
+    var te = state.lang==='te';
+    var title = te ? (s.title_te||s.title_en) : s.title_en;
+    var body = te ? (s.body_te||('['+t('tel_soon')+']')) : (s.body_en||'');
+    M.innerHTML=
+      '<button class="btn ghost" style="margin-bottom:12px" onclick="closeSOP()">‹ '+t('back')+'</button>'+
+      '<div class="card"><h2 class="'+(te?'te':'')+'">'+esc(title)+'</h2>'+
+      '<div class="sop-meta"><span class="pill">'+esc(s.code)+'</span>'+
+      '<span class="pill">'+t('version')+' '+esc(s.version)+'</span>'+
+      '<span class="pill">'+t('effective')+' '+esc(s.effective_date)+'</span></div>'+
+      '<div class="body-text '+(te?'te':'')+'">'+esc(body)+'</div></div>';
+  });
+}
+function closeSOP(){ state.view=null; render(); }
+
+/* --- Helper Mode (Stage D): picture-first cards + Telugu voice ------------- */
+function renderHelperHome(){
+  M.innerHTML='<div id="hh"></div>';
+  var hh=document.getElementById('hh');
+  var hello = state.lang==='te' ? 'నేటి పని' : "Today's work";
+  hh.innerHTML = (DEMO?'<div class="demo-banner">'+t('helper_note')+'</div>':'')+
+    '<div class="card"><h2>'+esc(state.session.person||'')+'</h2>'+
+      '<div class="muted">'+esc(state.session.role_name)+'</div>'+
+      '<div class="clock" style="margin-top:8px;font-size:15px">📋 '+hello+'</div></div>'+
+    '<div id="hcards"></div>'+
+    (state.embed?'':'<button class="btn ghost" onclick="logout()">'+t('logout')+'</button>');
+  api('getRole',{role_id:state.session.role_id,token:tok()}).then(function(d){
+    var items=(d.ok&&d.data.checklist)||[];
+    var el=document.getElementById('hcards');
+    if(!items.length){ el.innerHTML='<div class="pending">'+t('nocheck')+'</div>'; return; }
+    var cov=(d.ok&&d.data.covering)||[];
+    var covHtml='';
+    cov.forEach(function(c){
+      covHtml+='<div class="clock" style="margin-top:16px">👥 '+t('covering')+' — '+esc(c.absent_person)+'</div>'+
+        c.tasks.map(function(task){ return '<div class="hcard"><div class="hrow"><div class="num">+</div><div class="cap">'+esc(task)+'</div></div></div>'; }).join('');
+    });
+    el.innerHTML=items.map(helperCardHtml).join('')+covHtml;
+  });
+}
+function helperCardHtml(it){
+  var te = state.lang==='te';
+  var cap = te ? (it.item_te ? esc(it.item_te) : '<span class="pending">'+t('tel_soon')+'</span>') : esc(it.item_en);
+  var photo = it.image_url
+    ? '<div class="photo"><img loading="lazy" alt="" src="'+esc(it.image_url)+'"></div>'
+    : '<div class="photo ph">📷 '+(te?'ఫోటో త్వరలో':'photo coming')+'</div>';
+  var hasAudio = !!it.audio_url;
+  var speakArgs = "'"+esc(it.audio_url||'')+"'";
+  return '<div class="hcard">'+
+    '<div class="clock">🕐 '+esc(it.time_block||'')+'</div>'+
+    photo+
+    '<div class="hrow"><div class="num">'+esc(it.order)+'</div>'+
+    '<div class="cap">'+cap+'</div>'+
+    '<button class="speak" aria-label="play voice" onclick="playVoice('+speakArgs+',this)">'+(hasAudio?'🔊':'🔈')+'</button>'+
+    '</div></div>';
+}
+
+/* Simple navy/gold placeholder image so the picture layout is visible in
+   preview. Replaced by the real store photo (image_url) once provided. */
+function demoPhoto(label){
+  var svg='<svg xmlns="http://www.w3.org/2000/svg" width="400" height="260">'+
+    '<rect width="400" height="260" fill="#0B1F4D"/>'+
+    '<circle cx="200" cy="100" r="44" fill="none" stroke="#C9A227" stroke-width="6"/>'+
+    '<circle cx="200" cy="100" r="15" fill="#C9A227"/>'+
+    '<rect x="150" y="150" width="100" height="9" rx="4" fill="#C9A227"/>'+
+    '<text x="200" y="200" fill="#AEBEE0" font-family="sans-serif" font-size="17" text-anchor="middle">SAMPLE PHOTO</text>'+
+    '<text x="200" y="226" fill="#8094c0" font-family="sans-serif" font-size="14" text-anchor="middle">'+label+'</text>'+
+    '</svg>';
+  return 'data:image/svg+xml,'+encodeURIComponent(svg);
+}
+
+/* Play a task's Telugu voice note. Real audio when audio_url is set; otherwise
+   a short simulated "playing" so the button is demonstrable in preview. */
+var _audio=null;
+function playVoice(url, btn){
+  if(_audio){ try{_audio.pause();}catch(e){} _audio=null; }
+  var cards=document.querySelectorAll('.hcard.playing');
+  for(var i=0;i<cards.length;i++) cards[i].classList.remove('playing');
+  var card=btn.parentNode.parentNode; // .hrow -> .hcard
+  if(url){
+    _audio=new Audio(url);
+    card.classList.add('playing');
+    _audio.onended=function(){ card.classList.remove('playing'); };
+    _audio.play().catch(function(){ card.classList.remove('playing'); toast(t('tel_soon')); });
+  } else {
+    card.classList.add('playing');
+    toast(state.lang==='te' ? 'ఇక్కడ తెలుగు వాయిస్ వినిపిస్తుంది (రికార్డ్ అయ్యాక)' : 'Telugu voice note plays here once recorded');
+    setTimeout(function(){ card.classList.remove('playing'); }, 1500);
+  }
+}
+
+function tok(){ return (state.session&&state.session.token)||''; }
+
+/* ---------------- boot ---------------------------------------------------- */
+(function boot(){
+  var q; try{ q=new URLSearchParams(location.search); }catch(e){ q=null; }
+  var emb = q && (q.get('embed')==='1' || q.get('emp'));
+  if(emb){
+    // Embedded inside PB1 Core: no second login — Core passes the EmpID + token.
+    state.embed=true;
+    var apiParam=q.get('api'); if(apiParam){ API_URL=apiParam; DEMO=false; }
+    var emp=q.get('emp')||'', ctoken=q.get('token')||'';
+    applyLang();
+    if(DEMO){
+      var rid=empToRoleDemo(emp)||'ARJUN';
+      state.session=Object.assign({},DEMO_ROLES[rid]); render();
+    } else {
+      M.innerHTML='<div class="card"><div class="muted">'+t('loading')+'</div></div>';
+      api('coreLogin',{emp_id:emp,core_token:ctoken}).then(function(d){
+        if(!d.ok){ M.innerHTML='<div class="card"><div class="pending">'+esc(d.error||'Not authorised')+'</div></div>'; return; }
+        state.session=d.data; render();
+      }).catch(function(e){ M.innerHTML='<div class="card"><div class="pending">'+esc(String(e.message||e))+'</div></div>'; });
+    }
+    return;
+  }
+  try{ var saved=sessionStorage.getItem('geeta_session'); if(saved) state.session=JSON.parse(saved);}catch(e){}
+  applyLang(); render();
+})();
+
+/* service worker (offline shell only; harmless if it fails, e.g. in preview) */
+if('serviceWorker' in navigator){ try{ navigator.serviceWorker.register('sw.js'); }catch(e){} }
+</script>
+</body>
+</html>
